@@ -21,6 +21,7 @@ import {
   SET_AUTH,
   SENDING_REQUEST,
   REQUEST_ERROR,
+  CLEAR_ERROR,
 } from './constants';
 
 import auth from '../auth';
@@ -58,8 +59,14 @@ function usersReducer(state = authInitialState, action) {
     case REQUEST_ERROR:
       return {
         ...state,
-        error: action.error,
+        loginError: action.error,
       };
+
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        loginError: '',
+      }
 
     default:
       return state;

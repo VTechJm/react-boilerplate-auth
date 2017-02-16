@@ -25,6 +25,7 @@ import {
   LOGIN_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
+  CLEAR_ERROR,
 } from './constants';
 /**
  * Sets the form state
@@ -91,5 +92,14 @@ export function requestError(error) {
   return {
     type: REQUEST_ERROR,
     error,
+  };
+}
+
+/**
+ * Sets the `error` state as empty
+ */
+export function clearError() {
+  return {
+    type: CLEAR_ERROR,
   };
 }
