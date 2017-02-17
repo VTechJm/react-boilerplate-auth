@@ -11,13 +11,10 @@
  */
 
 import { fromJS } from 'immutable';
-import { combineReducers } from 'redux';
 
 import {
-  LOAD_REPOS_SUCCESS,
-  LOAD_REPOS,
-  LOAD_REPOS_ERROR,
-  CHANGE_FORM,
+  CHANGE_USERNAME,
+  CHANGE_PASSWORD,
   SET_AUTH,
   SENDING_REQUEST,
   REQUEST_ERROR,
@@ -27,10 +24,8 @@ import {
 import auth from '../auth';
 
 const authInitialState = fromJS({
-  formState: {
-    username: '',
-    password: '',
-  },
+  username: '',
+  password: '',
   loginError: '',
   currentlySending: false,
   loggedIn: auth.loggedIn(),
@@ -38,35 +33,29 @@ const authInitialState = fromJS({
 
 function usersReducer(state = authInitialState, action) {
   switch (action.type) {
-    case CHANGE_FORM:
-      return {
-        ...state,
-        formState: action.newFormState,
-      };
+    case CHANGE_USERNAME:
+      return state
+        .set('username', action.username);
+
+    case CHANGE_PASSWORD:
+      return state
+        .set('password', action.password);
 
     case SET_AUTH:
-      return {
-        ...state,
-        loggedIn: action.newAuthState,
-      };
+      return state
+        .set('loggedIn', action.newAuthState);
 
     case SENDING_REQUEST:
-      return {
-        ...state,
-        currentlySending: action.sending,
-      };
+      return state
+        .set('currentlySending', action.sending);
 
     case REQUEST_ERROR:
-      return {
-        ...state,
-        loginError: action.error,
-      };
+      return state
+        .set('loginError', action.error);
 
     case CLEAR_ERROR:
-      return {
-        ...state,
-        loginError: '',
-      }
+      return state
+        .set('loginError', '');
 
     default:
       return state;

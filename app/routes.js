@@ -19,20 +19,31 @@ export default function createRoutes(store) {
   return [
     {
       path: '/',
-      name: 'home',
+      name: 'loginPage',
       onEnter: (nextState, replace) => checkAuth(store, nextState, replace),
-      getComponent(nextState, cb) {
-        const importModules = Promise.all([
-          import('containers/HomePage'),
-        ]);
-
-        const renderRoute = loadModule(cb);
-
-        importModules.then(([component]) => {
-          renderRoute(component);
-        });
-
-        importModules.catch(errorLoading);
+      getComponent(location, cb) {
+        import('containers/LoginPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: 'login',
+      name: 'loginPage',
+      onEnter: (nextState, replace) => checkAuth(store, nextState, replace),
+      getComponent(location, cb) {
+        import('containers/LoginPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: 'home',
+      name: 'homePage',
+      onEnter: (nextState, replace) => checkAuth(store, nextState, replace),
+      getComponent(location, cb) {
+        import
+        ('containers/HomePage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
       },
     }, {
       path: '*',

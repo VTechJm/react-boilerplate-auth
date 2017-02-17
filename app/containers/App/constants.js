@@ -11,7 +11,8 @@
 
 export const DEFAULT_LOCALE = 'en';
 
-export const CHANGE_FORM = 'CHANGE_FORM';
+export const CHANGE_USERNAME = 'CHANGE_USERNAME';
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const SET_AUTH = 'SET_AUTH';
 export const SENDING_REQUEST = 'SENDING_REQUEST';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';

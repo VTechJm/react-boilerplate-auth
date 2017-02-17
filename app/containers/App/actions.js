@@ -16,10 +16,8 @@
  */
 
 import {
-  LOAD_REPOS,
-  LOAD_REPOS_SUCCESS,
-  LOAD_REPOS_ERROR,
-  CHANGE_FORM,
+  CHANGE_USERNAME,
+  CHANGE_PASSWORD,
   SET_AUTH,
   SENDING_REQUEST,
   LOGIN_REQUEST,
@@ -27,16 +25,30 @@ import {
   REQUEST_ERROR,
   CLEAR_ERROR,
 } from './constants';
+
 /**
  * Sets the form state
  * @param  {object} newFormState          The new state of the form
  * @param  {string} newFormState.username The new text of the username input field of the form
  * @param  {string} newFormState.password The new text of the password input field of the form
  */
-export function changeForm(newFormState) {
+export function changeUsername(username) {
   return {
-    type: CHANGE_FORM,
-    newFormState,
+    type: CHANGE_USERNAME,
+    username,
+  };
+}
+
+/**
+ * Sets the form state
+ * @param  {object} newFormState          The new state of the form
+ * @param  {string} newFormState.username The new text of the username input field of the form
+ * @param  {string} newFormState.password The new text of the password input field of the form
+ */
+export function changePassword(password) {
+  return {
+    type: CHANGE_PASSWORD,
+    password,
   };
 }
 

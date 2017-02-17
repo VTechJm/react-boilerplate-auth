@@ -9,16 +9,57 @@
  * the linting exception.
  */
 
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { connect } from 'react-redux';
+import Helmet from 'react-helmet';
+import { logout } from '../App/actions';
 
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+import styled from 'styled-components';
+
+import MinimalButton from '../../components/MinimalButton/index';
+
+const Wrapper = styled.div`
+  background-color: #fafafa;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+
+class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <Wrapper>
+        <Helmet
+          title="HomePage"
+          meta={[
+            { name: 'description', content: 'Description of HomePage' },
+          ]}
+        />
+        <h1>HomePage</h1>
+        <MinimalButton
+          type="submit"
+          onClick={this.props.dispatch(logout())}
+          value="Logout"
+        />
+      </Wrapper>
     );
   }
 }
+
+HomePage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+export default connect(null, mapDispatchToProps)(HomePage);
+
