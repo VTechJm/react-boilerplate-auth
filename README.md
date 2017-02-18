@@ -52,4 +52,4 @@ E.g.
 ## Credits
 
 * [React Boilerplate](https://github.com/react-boilerplate/react-boilerplate)
-* Auth largly based on [saga-login-flow](https://github.com/sotojuan/saga-login-flow)'s implementation
+* [saga-login-flow](https://github.com/sotojuan/saga-login-flow)
