@@ -16,7 +16,13 @@ const makeSelectPassword = () => createSelector(
   (global) => global.get('password'),
 );
 
+const makeLoginError = () => createSelector(
+  selectGlobal,
+  (global) => global.get('loginError'),
+);
+
 export {
   makeSelectUsername,
   makeSelectPassword,
+  makeLoginError,
 };

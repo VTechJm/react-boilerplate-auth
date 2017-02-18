@@ -27,7 +27,7 @@ import {
  * @param  {string} password               The password of the user
  * @param  {object} options                Options
  */
-export function *authorize({ username, password, isRegistering }) {
+export function* authorize({ username, password, isRegistering }) {
   // We send an action that tells Redux we're sending a request
   yield put({ type: SENDING_REQUEST, sending: true });
 
@@ -42,9 +42,9 @@ export function *authorize({ username, password, isRegistering }) {
     // as if it's synchronous because we pause execution until the call is done
     // with `yield`!
     if (isRegistering) {
-      response = yield call(auth.register, username, hash)
+      response = yield call(auth.register, username, hash);
     } else {
-      response = yield call(auth.login, username, hash)
+      response = yield call(auth.login, username, hash);
     }
 
     return response;
@@ -63,7 +63,7 @@ export function *authorize({ username, password, isRegistering }) {
 /**
  * Effect to handle logging out
  */
-export function * logout () {
+export function* logout() { // eslint-disable-line consistent-return
   // We tell Redux we're in the middle of a request
   yield put({ type: SENDING_REQUEST, sending: true });
 
@@ -71,10 +71,10 @@ export function * logout () {
   // `auth` module. If we get an error, we send an appropiate action. If we don't,
   // we return the response.
   try {
-    let response = yield call(auth.logout)
+    const response = yield call(auth.logout);
     yield put({ type: SENDING_REQUEST, sending: false });
 
-    return response
+    return response;
   } catch (error) {
     yield put({ type: REQUEST_ERROR, error: error.message });
   }
@@ -83,10 +83,10 @@ export function * logout () {
 /**
  * Log in saga
  */
-export function *loginFlow() {
+export function* loginFlow() {
   // Because sagas are generators, doing `while (true)` doesn't block our program
   // Basically here we say "this saga is always listening for actions"
-  while (true) {
+  while (true) { // eslint-disable-line no-constant-condition
     // And we're listening for `LOGIN_REQUEST` actions and destructuring its payload
     const request = yield take(LOGIN_REQUEST);
     const { username, password } = request.data;
@@ -123,8 +123,8 @@ export function *loginFlow() {
  * This is basically the same as the `if (winner.logout)` of above, just written
  * as a saga that is always listening to `LOGOUT` actions
  */
-export function *logoutFlow() {
-  while (true) {
+export function* logoutFlow() {
+  while (true) { // eslint-disable-line no-constant-condition
     yield take(LOGOUT);
     yield put({ type: SET_AUTH, newAuthState: false });
 
@@ -137,23 +137,23 @@ export function *logoutFlow() {
  * Register saga
  * Very similar to log in saga!
  */
-export function * registerFlow () {
-  while (true) {
+export function* registerFlow() {
+  while (true) { // eslint-disable-line no-constant-condition
     // We always listen to `REGISTER_REQUEST` actions
-    let request = yield take(REGISTER_REQUEST);
-    let { username, password } = request.data;
+    const request = yield take(REGISTER_REQUEST);
+    const { username, password } = request.data;
 
     // We call the `authorize` task with the data, telling it that we are registering a user
     // This returns `true` if the registering was successful, `false` if not
-    let wasSuccessful = yield call(authorize, { username, password, isRegistering: true });
+    const wasSuccessful = yield call(authorize, { username, password, isRegistering: true });
 
     // If we could register a user, we send the appropriate actions
     if (wasSuccessful) {
-      yield put({ type: SET_AUTH, newAuthState: true, }); // User is logged in (authorized) after being registered
+      yield put({ type: SET_AUTH, newAuthState: true }); // User is logged in (authorized) after being registered
 
-      yield put({ type: CHANGE_USERNAME, username: '', }); // Clear username
+      yield put({ type: CHANGE_USERNAME, username: '' }); // Clear username
 
-      yield put({ type: CHANGE_PASSWORD, password: '', }); // Clear password
+      yield put({ type: CHANGE_PASSWORD, password: '' }); // Clear password
 
       forwardTo('/home'); // Go to home page
     }
@@ -164,7 +164,7 @@ export function * registerFlow () {
 // each saga so that they are all "active" and listening.
 // Sagas are fired once at the start of an app and can be thought of as processes running
 // in the background, watching actions dispatched to the store.
-export default function *root() {
+export default function* root() {
   yield fork(loginFlow);
   yield fork(logoutFlow);
   yield fork(registerFlow);

@@ -24,12 +24,16 @@ const TextField = styled.input`
   padding: 5px;
 `;
 
-function MinimalForm({ onChangeUsername, onChangePassword, onSubmit, username, password, title }) {
+const Error = styled.h4`
+  color: #cc0000;
+`;
+
+function MinimalForm({ onChangeUsername, onChangePassword, onSubmit, username, password, title, error }) {
   return (
     <Form
       onSubmit={onSubmit}
     >
-      <h1>{title}</h1>
+      {title && <h1>{title}</h1>}
       <TextField
         type="text"
         name="username"
@@ -51,6 +55,7 @@ function MinimalForm({ onChangeUsername, onChangePassword, onSubmit, username, p
         value="Submit"
         onMouseDown={onSubmit}
       />
+      {error && <Error>{error}</Error>}
     </Form>
   );
 }
@@ -62,6 +67,7 @@ MinimalForm.propTypes = {
   username: React.PropTypes.string.isRequired,
   password: React.PropTypes.string.isRequired,
   title: React.PropTypes.string,
+  error: React.PropTypes.string,
 };
 
 export default MinimalForm;

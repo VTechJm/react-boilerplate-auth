@@ -103,10 +103,10 @@ export function logout() {
  * @param  {string} data.username The username of the user to register
  * @param  {string} data.password The password of the user to register
  */
-export function registerRequest (data) {
+export function registerRequest(data) {
   return {
     type: REGISTER_REQUEST,
-    data
+    data,
   };
 }
 

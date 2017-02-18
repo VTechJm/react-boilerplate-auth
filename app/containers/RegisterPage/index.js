@@ -29,7 +29,10 @@ export class RegisterPage extends React.PureComponent { // eslint-disable-line r
         <MinimalForm
           onChangeUsername={(event) => this.props.dispatch(updateUsername(event.target.value))}
           onChangePassword={(event) => this.props.dispatch(updatePassword(event.target.value))}
-          onSubmit={() => this.props.dispatch(registerRequest({ username: this.props.username, password: this.props.password, }))}
+          onSubmit={() => {
+            event.preventDefault();
+            this.props.dispatch(registerRequest({ username: this.props.username, password: this.props.password }));
+          }}
           username={this.props.username}
           password={this.props.password}
           title="Register"
