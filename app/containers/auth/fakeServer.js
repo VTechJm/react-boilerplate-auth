@@ -7,7 +7,7 @@ const salt = genSaltSync(10);
 
 // If we're testing, use a local storage polyfill
 if (global.process && process.env.NODE_ENV === 'test') {
-  localStorage = require('localStorage');
+  localStorage = require('localStorage'); // eslint-disable-line global-require
 } else {
   // If not, use the browser one
   localStorage = global.window.localStorage;
@@ -17,15 +17,15 @@ const server = {
   /**
    * Populates the users, similar to seeding a database in the real world
    */
-  init () {
+  init() {
     if (localStorage.users === undefined || !localStorage.encrypted) {
       // Set default user
-      let juan = 'juan';
-      let juanSalt = genSalt(juan);
-      let juanPass = hashSync('password', juanSalt);
+      const test = 'test';
+      const testSalt = genSalt(test);
+      const testPass = hashSync('password', testSalt);
 
       users = {
-        [juan]: hashSync(juanPass, salt)
+        [test]: hashSync(testPass, salt),
       };
 
       localStorage.users = JSON.stringify(users);
@@ -65,13 +65,14 @@ const server = {
       }
     });
   },
+
   /**
    * Pretends to register a user
    *
    * @param  {string} username The username of the user
    * @param  {string} password The password of the user
    */
-  register (username, password) {
+  register(username, password) {
     return new Promise((resolve, reject) => {
       // If the username isn't used, hash the password with bcrypt to store it in localStorage
       if (!this.doesUserExist(username)) {
@@ -94,7 +95,7 @@ const server = {
     return new Promise((resolve) => {
       localStorage.removeItem('token');
       resolve(true);
-    })
+    });
   },
 
   /**
@@ -103,7 +104,7 @@ const server = {
    */
   doesUserExist(username) {
     return !(users[username] === undefined);
-  }
+  },
 };
 
 server.init();

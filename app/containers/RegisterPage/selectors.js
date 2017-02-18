@@ -4,6 +4,13 @@ import { createSelector } from 'reselect';
  * Direct selector to the registerPage state domain
  */
 
+const selectGlobal = (state) => state.get('global');
+
+const makeRegisterError = () => createSelector(
+  selectGlobal,
+  (global) => global.get('loginError'),
+);
+
 const selectRegsiterPage = (state) => state.get('registerPage');
 
 const makeSelectUsername = () => createSelector(
@@ -19,4 +26,5 @@ const makeSelectPassword = () => createSelector(
 export {
   makeSelectUsername,
   makeSelectPassword,
+  makeRegisterError,
 };

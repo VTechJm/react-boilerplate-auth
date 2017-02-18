@@ -8,7 +8,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectUsername, makeSelectPassword } from './selectors';
+import { makeSelectUsername, makeSelectPassword, makeRegisterError } from './selectors';
 
 import { updateUsername, updatePassword } from './actions';
 
@@ -29,12 +29,13 @@ export class RegisterPage extends React.PureComponent { // eslint-disable-line r
         <MinimalForm
           onChangeUsername={(event) => this.props.dispatch(updateUsername(event.target.value))}
           onChangePassword={(event) => this.props.dispatch(updatePassword(event.target.value))}
-          onSubmit={() => {
+          onSubmit={(event) => {
             event.preventDefault();
             this.props.dispatch(registerRequest({ username: this.props.username, password: this.props.password }));
           }}
           username={this.props.username}
           password={this.props.password}
+          error={this.props.registerError}
           title="Register"
         />
       </div>
@@ -46,11 +47,13 @@ RegisterPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
+  registerError: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   username: makeSelectUsername(),
   password: makeSelectPassword(),
+  registerError: makeRegisterError(),
 });
 
 function mapDispatchToProps(dispatch) {
