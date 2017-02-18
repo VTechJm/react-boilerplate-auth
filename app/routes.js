@@ -46,6 +46,24 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: 'register',
+      name: 'registerPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/RegisterPage/reducer'),
+          import('containers/RegisterPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, component]) => {
+          injectReducer('registerPage', reducer.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

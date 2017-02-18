@@ -1,9 +1,9 @@
 // import React from 'react';
 // import { shallow } from 'enzyme';
 
-// import LoginForm from '../index';
+// import MinimalForm from '../index';
 
-describe('<LoginForm />', () => {
+describe('<MinimalForm />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

@@ -85,7 +85,6 @@ export function getAsyncInjectors(store) {
 export function checkAuth(store, nextState, replace) {
   const loggedIn = store.getState().get('global').get('loggedIn');
 
-
   store.dispatch(clearError());
 
   // Check if the path isn't home. That way we can apply specific logic to

@@ -15,6 +15,7 @@ import {
   CHANGE_PASSWORD,
   SENDING_REQUEST,
   LOGIN_REQUEST,
+  REGISTER_REQUEST,
   SET_AUTH,
   LOGOUT,
   REQUEST_ERROR,
@@ -26,7 +27,7 @@ import {
  * @param  {string} password               The password of the user
  * @param  {object} options                Options
  */
-export function *authorize({ username, password }) {
+export function *authorize({ username, password, isRegistering }) {
   // We send an action that tells Redux we're sending a request
   yield put({ type: SENDING_REQUEST, sending: true });
 
@@ -40,11 +41,14 @@ export function *authorize({ username, password }) {
     // module, which is asynchronous. Because we're using generators, we can work
     // as if it's synchronous because we pause execution until the call is done
     // with `yield`!
-    response = yield call(auth.login, username, hash);
+    if (isRegistering) {
+      response = yield call(auth.register, username, hash)
+    } else {
+      response = yield call(auth.login, username, hash)
+    }
 
     return response;
   } catch (error) {
-    console.log('hi')
     // If we get an error we send Redux the appropiate action and return
     yield put({ type: REQUEST_ERROR, error: error.message });
 
@@ -55,10 +59,11 @@ export function *authorize({ username, password }) {
   }
 }
 
+
 /**
  * Effect to handle logging out
  */
-export function *logout() {
+export function * logout () {
   // We tell Redux we're in the middle of a request
   yield put({ type: SENDING_REQUEST, sending: true });
 
@@ -66,10 +71,10 @@ export function *logout() {
   // `auth` module. If we get an error, we send an appropiate action. If we don't,
   // we return the response.
   try {
-    const response = yield call(auth.logout);
+    let response = yield call(auth.logout)
     yield put({ type: SENDING_REQUEST, sending: false });
 
-    return response;
+    return response
   } catch (error) {
     yield put({ type: REQUEST_ERROR, error: error.message });
   }
@@ -94,12 +99,14 @@ export function *loginFlow() {
       logout: take(LOGOUT),
     });
 
+
     // If `authorize` was the winner...
     if (winner.auth) {
       // ...we send Redux appropiate actions
       yield put({ type: SET_AUTH, newAuthState: true }); // User is logged in (authorized)
       yield put({ type: CHANGE_USERNAME, username: '' }); // Clear username
       yield put({ type: CHANGE_PASSWORD, password: '' }); // Clear password
+
       forwardTo('/home'); // Go to home page
       // If `logout` won...
     } else if (winner.logout) {
@@ -118,11 +125,38 @@ export function *loginFlow() {
  */
 export function *logoutFlow() {
   while (true) {
-    yield take(LOGOUT)
+    yield take(LOGOUT);
     yield put({ type: SET_AUTH, newAuthState: false });
 
     yield call(logout);
     forwardTo('/');
+  }
+}
+
+/**
+ * Register saga
+ * Very similar to log in saga!
+ */
+export function * registerFlow () {
+  while (true) {
+    // We always listen to `REGISTER_REQUEST` actions
+    let request = yield take(REGISTER_REQUEST);
+    let { username, password } = request.data;
+
+    // We call the `authorize` task with the data, telling it that we are registering a user
+    // This returns `true` if the registering was successful, `false` if not
+    let wasSuccessful = yield call(authorize, { username, password, isRegistering: true });
+
+    // If we could register a user, we send the appropriate actions
+    if (wasSuccessful) {
+      yield put({ type: SET_AUTH, newAuthState: true, }); // User is logged in (authorized) after being registered
+
+      yield put({ type: CHANGE_USERNAME, username: '', }); // Clear username
+
+      yield put({ type: CHANGE_PASSWORD, password: '', }); // Clear password
+
+      forwardTo('/home'); // Go to home page
+    }
   }
 }
 
@@ -133,6 +167,7 @@ export function *logoutFlow() {
 export default function *root() {
   yield fork(loginFlow);
   yield fork(logoutFlow);
+  yield fork(registerFlow);
 }
 
 // Little helper function to abstract going to different pages

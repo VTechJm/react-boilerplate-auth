@@ -7,7 +7,7 @@ import { createSelector } from 'reselect';
 const selectGlobal = (state) => state.get('global');
 
 const makeSelectUsername = () => createSelector(
-  [selectGlobal],
+  selectGlobal,
   (global) => global.get('username'),
 );
 

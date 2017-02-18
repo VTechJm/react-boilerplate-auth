@@ -41,7 +41,7 @@ const server = {
    * @param  {string} password The password of the user
    */
   login(username, password) {
-    const userExists = this.doesUserExist(username)
+    const userExists = this.doesUserExist(username);
 
     return new Promise((resolve, reject) => {
       // If the user exists and the password fits log the user in and resolve

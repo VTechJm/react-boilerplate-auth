@@ -43,7 +43,7 @@ class HomePage extends React.PureComponent { // eslint-disable-line react/prefer
         <h1>HomePage</h1>
         <MinimalButton
           type="submit"
-          onClick={this.props.dispatch(logout())}
+          onClick={() => this.props.dispatch(logout())}
           value="Logout"
         />
       </Wrapper>

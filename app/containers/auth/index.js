@@ -17,8 +17,7 @@ const auth = {
    * @param  {string} password The password of the user
    */
   login(username, password) {
-    if (auth.loggedIn()) return Promise.resolve(true)
-
+    if (auth.loggedIn()) return Promise.resolve(true);
     // Post a fake request
     return request.post('/login', { username, password })
       .then((response) => {
@@ -55,6 +54,6 @@ const auth = {
   onChange() {
 
   },
-}
+};
 
 export default auth;

@@ -21,6 +21,7 @@ import {
   SET_AUTH,
   SENDING_REQUEST,
   LOGIN_REQUEST,
+  REGISTER_REQUEST,
   LOGOUT,
   REQUEST_ERROR,
   CLEAR_ERROR,
@@ -93,6 +94,19 @@ export function loginRequest(data) {
 export function logout() {
   return {
     type: LOGOUT,
+  };
+}
+
+/**
+ * Tells the app we want to register a user
+ * @param  {object} data          The data we're sending for registration
+ * @param  {string} data.username The username of the user to register
+ * @param  {string} data.password The password of the user to register
+ */
+export function registerRequest (data) {
+  return {
+    type: REGISTER_REQUEST,
+    data
   };
 }
 

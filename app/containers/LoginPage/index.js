@@ -7,35 +7,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import LoginForm from '../../components/LoginForm/';
+import MinimalForm from '../../components/MinimalForm/index';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectUsername, makeSelectPassword } from './selectors';
 import { loginRequest, changeUsername, changePassword } from '../App/actions';
 
 export class LoginPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onLogin = this.onLogin.bind(this);
-  }
-
-  onChangeUsername(event) {
-    this.props.dispatch(changeUsername(event.target.value));
-  }
-
-  onChangePassword(event) {
-    this.props.dispatch(changePassword(event.target.value));
-  }
-
-  onLogin() {
-    this.props.dispatch(loginRequest({
-      username: this.props.username,
-      password: this.props.password,
-    }));
-  }
-
   render() {
     return (
       <div>
@@ -45,12 +22,13 @@ export class LoginPage extends React.PureComponent { // eslint-disable-line reac
             { name: 'description', content: 'Description of LoginPage' },
           ]}
         />
-        <LoginForm
-          onChangeUsername={this.onChangeUsername}
-          onChangePassword={this.onChangePassword}
-          onLogin={this.onLogin}
+        <MinimalForm
+          onChangeUsername={(event) => this.props.dispatch(changeUsername(event.target.value))}
+          onChangePassword={(event) => this.props.dispatch(changePassword(event.target.value))}
+          onSubmit={() => this.props.dispatch(loginRequest({ username: this.props.username, password: this.props.password, }))}
           username={this.props.username}
           password={this.props.password}
+          title="Login"
         />
       </div>
     );
