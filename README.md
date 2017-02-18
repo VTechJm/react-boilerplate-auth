@@ -9,6 +9,9 @@ Authentication happens in `app/auth/index.js`, using `fakeRequest.js` and `fakeS
 ## Demo
 [react-boilerplate-auth.herokuapp.com](https://react-boilerplate-auth.herokuapp.com/)
 
+Username: *test*   
+Password: *password*
+
 Available routes:
 
 * `/home` (only accessible when logged in)
